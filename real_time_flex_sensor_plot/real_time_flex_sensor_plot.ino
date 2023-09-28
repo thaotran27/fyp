@@ -1,3 +1,4 @@
+#include <Adafruit_LSM6DSOX.h>
 // left hand
 const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
@@ -12,11 +13,12 @@ const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
 const int FLEX_PINKY = A0;*/
 
-
 // Measure the voltage at 5V and the actual resistance of your// 100k resistor, and enter them below:
-const float VCC = 3.3;
-const float R_DIV =100000.0; 
+const float VCC = 3.3; // 模块供电电压，ADC参考电压为V
+const float R_DIV =100000.0; // 分压电阻为100KΩ
 // Upload the code, then try to adjust these values to more// accurately calculate bend degree.
+
+Adafruit_LSM6DSOX sox;
 
 class Finger{
   public:
@@ -39,6 +41,11 @@ class Finger{
     float flexR= R_DIV * (VCC / flexV-1.0);
     return flexR;
   }
+
+  float readBendness(){
+    float flexR = readResistance();
+    return map(flexR, straight_resistance, bend_resistance,0, 100.0);
+  }
 };
 
 // define fingers
@@ -48,8 +55,8 @@ Finger middle(FLEX_MIDDLE);
 Finger ring(FLEX_RING);
 Finger pinky(FLEX_PINKY);
 
-#include <Adafruit_LSM6DSOX.h>
-Adafruit_LSM6DSOX sox;
+// Flags
+bool isCalibrated = false;
 
 void setup() 
 {
@@ -59,58 +66,76 @@ void setup()
   middle.init();
   ring.init();
   pinky.init();
-  //Serial.println("thumb:,index:,middle:,ring:,pinky:);
-  Serial.println("accel_x:,accel_y:,accel_z:,gyro_x:,gyro_y:,gyro_z:");
-}
+
+  delay(1000);
+  //IMU set up
+  Serial.println("Adafruit LSM6DSOX test!");
+
+  Serial.print(!sox.begin_I2C());
+  if (!sox.begin_I2C()) {
+    // if (!sox.begin_SPI(LSM_CS)) {
+    // if (!sox.begin_SPI(LSM_CS, LSM_SCK, LSM_MISO, LSM_MOSI)) {
+    // Serial.println("Failed to find LSM6DSOX chip");
+    while (1) {
+      delay(10);
+    }
+  }
+  Serial.println("LSM6DSOX Found!");
+ }
 void loop() 
 {
 
-      /*thumb.straight_resistance = thumb.readResistance();
-      findex.straight_resistance = findex.readResistance();
-      middle.straight_resistance = middle.readResistance();
-      ring.straight_resistance = ring.readResistance();
-      pinky.straight_resistance = pinky.readResistance();
-      Serial.print(thumb.straight_resistance); Serial.print(",");
-      Serial.print(findex.straight_resistance); Serial.print(",");
-      Serial.print(middle.straight_resistance); Serial.print(",");
-      Serial.print(ring.straight_resistance); Serial.print(",");
-      Serial.println(pinky.straight_resistance); Serial.print(",");*/
-
-      //  /* Get a new normalized sensor event */
-      sensors_event_t accel;
-      sensors_event_t gyro;
-      sensors_event_t temp;
-      sox.getEvent(&accel, &gyro, &temp);
-
-      /* Display the results (acceleration is measured in m/s^2) */
-      Serial.print(accel.acceleration.x); Serial.print(",");
-      Serial.print(accel.acceleration.y); Serial.print(",");
-      Serial.print(accel.acceleration.z); Serial.print(",");
-      /* Display the results (rotation is measured in rad/s) */
-      Serial.print(gyro.gyro.x); Serial.print(",");
-      Serial.print(gyro.gyro.y); Serial.print(",");
-      Serial.println(gyro.gyro.z); Serial.print(",");
-  delay(1);  
- 
-
-  // Read the ADC, and calculate voltage and resistance from it
+  // Calibration
+  if(!isCalibrated){
+    delay(1000);
+    Serial.println("Straight up you hands,");
+    delay(1000);
+    for(int i = 0; i < 20; i++){
+      thumb.straight_resistance += thumb.readResistance();
+      findex.straight_resistance += findex.readResistance();
+      middle.straight_resistance += middle.readResistance();
+      ring.straight_resistance += ring.readResistance();
+      pinky.straight_resistance += pinky.readResistance();
+      delay(200);
+    }
+    thumb.straight_resistance /= 20;
+    findex.straight_resistance /= 20;
+    middle.straight_resistance /= 20;
+    ring.straight_resistance /= 20;
+    pinky.straight_resistance /= 20;
   
-  /*int flexADC=analogRead(thumb.pin);
-
-  Serial.print("flexADC:");
-  Serial.print(flexADC);
-  Serial.print("\n");
-  float flexV=flexADC* VCC / 4096;
-
-  float flexR= R_DIV * (VCC / flexV-1.0);
-  Serial.println("Voltage: "+String(flexV) +" V");
-  Serial.println("Resistance: "+String(flexR) +" ohms");
-// Use the calculated resistance to estimate the sensor's// bend angle:
-  float angle = map(flexR, STRAIGHT_RESISTANCE, BEND_RESISTANCE,0, 90.0);
-
-  Serial.println("Bend: "+String(angle) +" degrees");
-  Serial.println();*/
-
-
-
+    Serial.println("Bend down you hands,");
+    for(int i = 0; i < 20; i++){
+      thumb.bend_resistance += thumb.readResistance();
+      findex.bend_resistance += findex.readResistance();
+      middle.bend_resistance += middle.readResistance();
+      ring.bend_resistance += ring.readResistance();
+      pinky.bend_resistance += pinky.readResistance();
+      delay(200);
+    }
+    thumb.bend_resistance /= 20;
+    findex.bend_resistance /= 20;
+    middle.bend_resistance /= 20;
+    ring.bend_resistance /= 20;
+    pinky.bend_resistance /= 20;
+    isCalibrated = true;
+    Serial.println("Calibration finished!,");
+    Serial.println("Resistance,Thumb,Index,Middle,Ring,Pinky");
+    Serial.printf("Straight resistance,%f,%f,%f,%f,%f\n",thumb.straight_resistance,findex.straight_resistance, middle.straight_resistance, ring.straight_resistance,pinky.straight_resistance);
+    Serial.printf("Bend resistance,%f,%f,%f,%f,%f\n",thumb.bend_resistance,findex.bend_resistance, middle.bend_resistance, ring.bend_resistance,pinky.bend_resistance);
+    Serial.println("Time to read data,");
+    Serial.println("Label,Thumb,Index,Middle,Ring,Pinky,ax,ay,az,gx,gy,gz");
   }
+
+  sensors_event_t accel;
+  sensors_event_t gyro;
+  sensors_event_t temp;
+  sox.getEvent(&accel, &gyro, &temp);
+
+  Serial.printf("A,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+  ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
+  gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
+     
+  delay(500);
+
+}
