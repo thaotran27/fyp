@@ -3,13 +3,6 @@
 
 #include <Adafruit_LSM6DSOX.h>
 
-// For SPI mode, we need a CS pin
-#define LSM_CS 10
-// For software-SPI mode we need SCK/MOSI/MISO pins
-#define LSM_SCK 5
-#define LSM_MISO 12
-#define LSM_MOSI 11
-
 Adafruit_LSM6DSOX sox;
 void setup(void) {
   Serial.begin(115200);
@@ -154,44 +147,44 @@ void loop() {
   sensors_event_t temp;
   sox.getEvent(&accel, &gyro, &temp);
 
-  Serial.print("\t\tTemperature ");
-  Serial.print(temp.temperature);
-  Serial.println(" deg C");
+  //Serial.print("\t\tTemperature ");
+  //Serial.print(temp.temperature);
+  //Serial.println(" deg C");
 
   /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("\t\tAccel X: ");
-  Serial.print(accel.acceleration.x);
-  Serial.print(" \tY: ");
-  Serial.print(accel.acceleration.y);
-  Serial.print(" \tZ: ");
-  Serial.print(accel.acceleration.z);
-  Serial.println(" m/s^2 ");
+  //Serial.print("\t\tAccel X: ");
+  //Serial.print(accel.acceleration.x);
+  //Serial.print(" \tY: ");
+  //Serial.print(accel.acceleration.y);
+  //Serial.print(" \tZ: ");
+  //Serial.print(accel.acceleration.z);
+  //Serial.println(" m/s^2 ");
 
   /* Display the results (rotation is measured in rad/s) */
-  Serial.print("\t\tGyro X: ");
-  Serial.print(gyro.gyro.x);
-  Serial.print(" \tY: ");
-  Serial.print(gyro.gyro.y);
-  Serial.print(" \tZ: ");
-  Serial.print(gyro.gyro.z);
-  Serial.println(" radians/s ");
-  Serial.println();
+  //Serial.print("\t\tGyro X: ");
+  //Serial.print(gyro.gyro.x);
+  //Serial.print(" \tY: ");
+  //Serial.print(gyro.gyro.y);
+ // Serial.print(" \tZ: ");
+  //Serial.print(gyro.gyro.z);
+ // Serial.println(" radians/s ");
+ // Serial.println();
 
-  delay(100);
+  //delay(2000);
 
   //  // serial plotter friendly format
 
-  //  Serial.print(temp.temperature);
-  //  Serial.print(",");
+    Serial.print(temp.temperature);
+    Serial.print(",");
 
-  //  Serial.print(accel.acceleration.x);
-  //  Serial.print(","); Serial.print(accel.acceleration.y);
-  //  Serial.print(","); Serial.print(accel.acceleration.z);
-  //  Serial.print(",");
+    Serial.print(accel.acceleration.x);
+    Serial.print(","); Serial.print(accel.acceleration.y);
+    Serial.print(","); Serial.print(accel.acceleration.z);
+    Serial.print(",");
 
-  // Serial.print(gyro.gyro.x);
-  // Serial.print(","); Serial.print(gyro.gyro.y);
-  // Serial.print(","); Serial.print(gyro.gyro.z);
-  // Serial.println();
-  //  delayMicroseconds(10000);
+   Serial.print(gyro.gyro.x);
+   Serial.print(","); Serial.print(gyro.gyro.y);
+   Serial.print(","); Serial.print(gyro.gyro.z);
+   Serial.println();
+   delay(100);
 }

@@ -1,13 +1,27 @@
+// This program is for calibration, i.e. find a norm to put all sensors data in the same scale [0, 10.0]
+// For data collected from the sensor: 
+//  if resistance > bend_resistance, then resistance = bend_resistance
+//  if resistance < straight_resistance, then resistance = straight_resistance
+//  float bendness = map(resistance, straight_resistance, bend_resistance,0, 10.0);
 
-const int FLEX_THUMB = A0;
+// left hand
+/*const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
-const int FLEX_PINKY = A8;
+const int FLEX_PINKY = A8;*/
+
+// right hand
+const int FLEX_THUMB = A8;
+const int FLEX_INDEX = A3;
+const int FLEX_MIDDLE = A2;
+const int FLEX_RING = A1;
+const int FLEX_PINKY = A0;
+
 
 // Measure the voltage at 5V and the actual resistance of your// 100k resistor, and enter them below:
-const float VCC = 3.3; // 模块供电电压，ADC参考电压为V
-const float R_DIV =100000.0; // 分压电阻为100KΩ
+const float VCC = 3.3;
+const float R_DIV =100000.0; 
 // Upload the code, then try to adjust these values to more// accurately calculate bend degree.
 
 class Finger{
@@ -69,6 +83,10 @@ void loop()
       delay(200);
     }
     thumb.straight_resistance /= 20;
+    findex.straight_resistance /= 20;
+    middle.straight_resistance /= 20;
+    ring.straight_resistance /= 20;
+    pinky.straight_resistance /= 20;
   
     Serial.println("Bend down you hands.");
     for(int i = 0; i < 20; i++){
@@ -80,6 +98,11 @@ void loop()
       delay(200);
     }
     thumb.bend_resistance /= 20;
+    findex.bend_resistance /= 20;
+    middle.bend_resistance /= 20;
+    ring.bend_resistance /= 20;
+    pinky.bend_resistance /= 20;
+
     isCalibrated = true;
     Serial.println("Calibration finished!");
     Serial.println("straight resistance: ");
@@ -96,25 +119,9 @@ void loop()
     Serial.println(pinky.bend_resistance);
   }
 
-  // Read the ADC, and calculate voltage and resistance from it
-  
-  /*int flexADC=analogRead(thumb.pin);
 
-  Serial.print("flexADC:");
-  Serial.print(flexADC);
-  Serial.print("\n");
-  float flexV=flexADC* VCC / 4096;
 
-  float flexR= R_DIV * (VCC / flexV-1.0);
-  Serial.println("Voltage: "+String(flexV) +" V");
-  Serial.println("Resistance: "+String(flexR) +" ohms");
-// Use the calculated resistance to estimate the sensor's// bend angle:
-  float angle = map(flexR, STRAIGHT_RESISTANCE, BEND_RESISTANCE,0, 90.0);
 
-  Serial.println("Bend: "+String(angle) +" degrees");
-  Serial.println();*/
-
-  
   delay(500);
 
   }
