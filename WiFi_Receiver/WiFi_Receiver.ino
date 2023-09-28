@@ -63,6 +63,7 @@ void loop() {
   int board2Y = boardsStruct[1].y;
   int board3X = boardsStruct[2].x;
   int board3Y = boardsStruct[2].y;*/
+  Serial.print("hello world");
 
   delay(10000);  
 }

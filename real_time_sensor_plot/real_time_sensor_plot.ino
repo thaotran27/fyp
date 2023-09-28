@@ -119,6 +119,7 @@ void loop()
     ring.bend_resistance /= 20;
     pinky.bend_resistance /= 20;
     isCalibrated = true;
+
     Serial.println("Calibration finished!,");
     Serial.println("Resistance,Thumb,Index,Middle,Ring,Pinky");
     Serial.printf("Straight resistance,%f,%f,%f,%f,%f\n",thumb.straight_resistance,findex.straight_resistance, middle.straight_resistance, ring.straight_resistance,pinky.straight_resistance);
@@ -135,7 +136,25 @@ void loop()
   Serial.printf("A,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
   ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
   gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
+
+  // better for serial plotter
+  /*
+  Serial.print("thumb:"); Serial.print(thumb.readBendness()); Serial.print(",");
+  Serial.print("index:"); Serial.print(findex.readBendness()); Serial.print(",");
+  Serial.print("middle:"); Serial.print(middle.readBendness()); Serial.print(",");
+  Serial.print("ring:"); Serial.print(ring.readBendness()); Serial.print(",");
+  Serial.print("pinky:"); Serial.print(pinky.readBendness()); Serial.print(",");
+  Serial.println("end");
      
+  Serial.print("accel x:"); Serial.print(accel.acceleration.x); Serial.print(",");
+  Serial.print("accel y:"); Serial.print(accel.acceleration.y); Serial.print(",");
+  Serial.print("accel z:"); Serial.print(accel.acceleration.z); Serial.print(",");
+  Serial.print("gyro x:"); Serial.print(gyro.gyro.x); Serial.print(",");
+  Serial.print("gyro y:"); Serial.print(gyro.gyro.y); Serial.print(",");
+  Serial.print("gyro z:"); Serial.print(gyro.gyro.z); Serial.print(",");
+  Serial.println("end");
+  */
+
   delay(500);
 
 }
