@@ -58,6 +58,10 @@ Finger pinky(FLEX_PINKY);
 // Flags
 bool isCalibrated = false;
 
+// data streaming
+import processing.serial.*;
+
+
 void setup() 
 {
   Serial.begin(9600);
