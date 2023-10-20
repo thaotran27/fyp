@@ -1,17 +1,29 @@
 #include <Adafruit_LSM6DSOX.h>
+#include "RandomForest.h"
+
+// this class will be different if you used another type of classifier, just check the model.h file
+Eloquent::ML::Port::RandomForest classifier;
+
+void classify(float thumb, float ind, float mid, float ring, float pink, float ax, float ay, float az, float gx, float gy, float gz) {
+    float x_sample[] = { thumb, ind, mid, ring, pink, ax, ay, az, gx, gy, gz };
+
+    Serial.print("Predicted class: ");
+    Serial.println(classifier.predictLabel(x_sample));
+}
 // left hand
+/*
 const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
-const int FLEX_PINKY = A8;
+const int FLEX_PINKY = A8;*/
 
 // right hand
-/*const int FLEX_THUMB = A8;
+const int FLEX_THUMB = A8;
 const int FLEX_INDEX = A3;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
-const int FLEX_PINKY = A0;*/
+const int FLEX_PINKY = A0;
 
 // Measure the voltage at 5V and the actual resistance of your// 100k resistor, and enter them below:
 const float VCC = 3.3; // 模块供电电压，ADC参考电压为V
@@ -59,7 +71,7 @@ Finger pinky(FLEX_PINKY);
 bool isCalibrated = false;
 
 // data streaming
-import processing.serial.*;
+//import processing.serial.*;
 
 
 void setup() 
@@ -138,6 +150,9 @@ void loop()
   sox.getEvent(&accel, &gyro, &temp);
 
   Serial.printf("A,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+  ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
+  gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
+  classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
   ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
   gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
 
