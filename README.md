@@ -54,6 +54,8 @@ source venv\bin\activate
 ```
 pip install -r requirements.txt
 ```
+- If you see this (venv) at the front of your command line, you are done activating the environment:
+![Alt text](image.png)
 
 > Set up one time, after that you just need to activate.
 
