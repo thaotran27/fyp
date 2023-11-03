@@ -1,8 +1,10 @@
 #include <Adafruit_LSM6DSOX.h>
 #include "RandomForest.h"
+#include "XGBoost.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
-Eloquent::ML::Port::RandomForest classifier;
+//Eloquent::ML::Port::RandomForest classifier;
+Eloquent::ML::Port::XGBClassifier classifier;
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float ax, float ay, float az, float gx, float gy, float gz) {
     float x_sample[] = { thumb, ind, mid, ring, pink, ax, ay, az, gx, gy, gz };
@@ -11,19 +13,21 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float a
     Serial.println(classifier.predictLabel(x_sample));
 }
 // left hand
-/*
+
 const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
-const int FLEX_PINKY = A8;*/
+const int FLEX_PINKY = A8;
 
 // right hand
+/*
 const int FLEX_THUMB = A8;
 const int FLEX_INDEX = A3;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
 const int FLEX_PINKY = A0;
+*/
 
 // Measure the voltage at 5V and the actual resistance of your// 100k resistor, and enter them below:
 const float VCC = 3.3; // 模块供电电压，ADC参考电压为V
