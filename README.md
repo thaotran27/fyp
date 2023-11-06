@@ -101,7 +101,7 @@ git push
 ```
 
 
-##4. Workflow for adding new raw data:
+## 4. Workflow for adding new raw data:
 - Pull from git:
 ```
 git pull
@@ -136,12 +136,12 @@ git commit -m "Add data with label O"
 git push
 ```
 
->What to do if you key in the command incorrectly (wrong files, wrong label, etc):
->DO NOT DVC ADD OR COMMIT
->-	delete the file
->-	dvc pull (to download the old dataset)
+> What to do if you key in the command incorrectly (wrong files, wrong label, etc):
+> DO NOT DVC ADD OR COMMIT
+> -	delete the file
+> -	dvc pull (to download the old dataset)
 
-##5. Workflow to edit/create pipeline
+## 5. Workflow to edit/create pipeline
 
 Edits and pipeline information is available in dvc.yaml file
 
