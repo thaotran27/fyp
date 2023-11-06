@@ -7,18 +7,28 @@ stages:
     outs:
     - data/prepared/test.csv
     - data/prepared/train.csv
-  train:
-    cmd: python src/train.py
+  trainXGB:
+    cmd: python src/train.py XGBoost
     deps:
     - data/prepared/train.csv
     - src/train.py
     outs:
-    - model/model.joblib
+    - model/modelXGB.joblib
+  trainRF:
+    cmd: python src/train.py RandomForest
+    deps:
+    - data/prepared/train.csv
+    - src/train.py
+    outs:
+    - model/modelRF.joblib
   evaluate:
     cmd: python src/evaluate.py
     deps:
-    - model/model.joblib
+    - model/modelRF.joblib
+    - model/modelXGB.joblib
     - src/evaluate.py
     metrics:
-    - metrics/accuracy.json:
+    - metrics/accuracy_RF.json:
+        cache: false
+    - metrics/accuracy_XGB.json:
         cache: false
