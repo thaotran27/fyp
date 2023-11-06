@@ -1,8 +1,8 @@
-#GIT AND DVC: DATA MANAGEMENT
+# GIT AND DVC: DATA MANAGEMENT
 
 Dvc is the dataset version control (git but for dataset). Dvc is integrated because git is not robust to store big data files.
 
-##1.	Download python and DVC
+## 1.	Download python and DVC
 #### a. Download Python 
 - Download link: Python.org
 - Or in Microsoft store
