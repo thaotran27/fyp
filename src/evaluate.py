@@ -3,7 +3,7 @@ from joblib import load
 import json
 from pathlib import Path
 import numpy as np
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from train import load_data
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -19,27 +19,29 @@ def main(repo_path):
     model_XGB = load(repo_path / "model/modelXGB.joblib")
 
     predictions_RF = model_RF.predict(test_data)
-    accuracy_RF = accuracy_score(labels, predictions_RF)
-    metrics_RF = {"accuracy": accuracy_RF}
-    accuracy_path_RF = repo_path / "metrics/accuracy_RF.json"
-    accuracy_path_RF.write_text(json.dumps(metrics_RF))
-    disp1 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_RF)
+    metrics_RF = {'Accuracy': accuracy_score(labels, predictions_RF), 
+                  'f1-score': f1_score(labels, predictions_RF, average='weighted'), 
+                  'Precision': precision_score(labels, predictions_RF, average='weighted'),
+                  'Recall': recall_score(labels, predictions_RF, average='weighted')}
+    metrics_path_RF = repo_path / "metrics/metrics_RF.json"
+    metrics_path_RF.write_text(json.dumps(metrics_RF))
+    
 
     predictions_XGB = model_XGB.predict(test_data)
     classmap = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'O', 5: 'S'}
     predictions_XGB_decoded = np.array([classmap[value] for value in predictions_XGB])
-    accuracy_XGB = accuracy_score(labels, predictions_XGB_decoded)
-    metrics_XGB = {"accuracy": accuracy_XGB}
-    accuracy_path_XGB = repo_path / "metrics/accuracy_XGB.json"
-    accuracy_path_XGB.write_text(json.dumps(metrics_XGB))
-    disp2 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_XGB_decoded)
+    metrics_XGB = {'Accuracy': accuracy_score(labels, predictions_XGB_decoded), 
+                  'f1-score': f1_score(labels, predictions_XGB_decoded, average='weighted'), 
+                  'Precision': precision_score(labels, predictions_XGB_decoded, average='weighted'),
+                  'Recall': recall_score(labels, predictions_XGB_decoded, average='weighted')}
+    metrics_path_XGB = repo_path / "metrics/metrics_XGB.json"
+    metrics_path_XGB.write_text(json.dumps(metrics_XGB))
+    
 
-    f, axes = plt.subplots(1, 2, figsize=(20, 5), sharey='row')
-    disp1.plot(ax=axes[0], xticks_rotation=45)
-    disp1.ax_.set_title("RandomForest")
-    disp1.plot(ax=axes[1], xticks_rotation=45)
-    disp1.ax_.set_title("XGBoost")
-    plt.show()
+    disp1 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_RF)
+    disp1.figure_.savefig('confusion_matrix/confusion_matrix_RF.png')
+    disp2 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_XGB_decoded)
+    disp2.figure_.savefig('confusion_matrix/confusion_matrix_XGB.png')
 
 if __name__ == "__main__":
     repo_path = Path(__file__).parent.parent

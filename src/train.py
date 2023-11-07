@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 import sys
-from sklearn.metrics import accuracy_score
 
 def load_data(data_path):
     dataset_train = pd.read_csv(data_path)

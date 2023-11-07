@@ -28,7 +28,7 @@ stages:
     - model/modelXGB.joblib
     - src/evaluate.py
     metrics:
-    - metrics/accuracy_RF.json:
+    - metrics/metrics_RF.json:
         cache: false
-    - metrics/accuracy_XGB.json:
+    - metrics/metrics_XGB.json:
         cache: false

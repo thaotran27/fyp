@@ -30,8 +30,8 @@ stages:
       size: 326510
     - path: src/train.py
       hash: md5
-      md5: b235db1704c7990766ed85e06e253497
-      size: 1946
+      md5: 9e7010f4d9b168bfd2221de2f135f65d
+      size: 1903
     outs:
     - path: model/modelXGB.joblib
       hash: md5
@@ -46,34 +46,34 @@ stages:
       size: 326510
     - path: src/train.py
       hash: md5
-      md5: b235db1704c7990766ed85e06e253497
-      size: 1946
+      md5: 9e7010f4d9b168bfd2221de2f135f65d
+      size: 1903
     outs:
     - path: model/modelRF.joblib
       hash: md5
-      md5: 98a0b970f863537941cc6d615c0cdb59
-      size: 121673
+      md5: d0547f3f89bfac6979bf041f2cdae4a0
+      size: 111176
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: model/modelRF.joblib
       hash: md5
-      md5: 98a0b970f863537941cc6d615c0cdb59
-      size: 121673
+      md5: d0547f3f89bfac6979bf041f2cdae4a0
+      size: 111176
     - path: model/modelXGB.joblib
       hash: md5
       md5: 427841b7847a738b470aead5e4d798ea
       size: 577265
     - path: src/evaluate.py
       hash: md5
-      md5: b20a8a30c99ede98c1f83917e84fca04
-      size: 1737
+      md5: aee6000747efebd1a1ff1e0176dcfd28
+      size: 2150
     outs:
-    - path: metrics/accuracy_RF.json
+    - path: metrics/metrics_RF.json
       hash: md5
-      md5: e101957d534c44d20781d1a287820087
-      size: 32
-    - path: metrics/accuracy_XGB.json
+      md5: f3e1e5536909e8ddf8619b5f876c9340
+      size: 127
+    - path: metrics/metrics_XGB.json
       hash: md5
-      md5: 8e9bfb7a39bd7075eb3fa5f69e7cf1cc
-      size: 32
+      md5: 9655b4064b1ad7a686a2b5d3b5d9e77c
+      size: 126
