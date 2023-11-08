@@ -20,7 +20,7 @@ def get_model(X_train, y_train, model_name):
     print("start training")
     print(pd.DataFrame(X_train))
     if(model_name == "RandomForest"):
-        clf = RandomForestClassifier(max_depth=2, random_state=0)
+        clf = RandomForestClassifier(n_estimators=100, max_depth=2, criterion='gini', random_state=0)
         clf.fit(X_train, y_train)
     if(model_name == "XGBoost"):
         classmap = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'O', 5: 'S'}

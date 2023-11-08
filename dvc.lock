@@ -21,22 +21,6 @@ stages:
       hash: md5
       md5: 1dc02e5668c96ebd73776a5d4af2d8c6
       size: 326510
-  trainXGB:
-    cmd: python src/train.py XGBoost
-    deps:
-    - path: data/prepared/train.csv
-      hash: md5
-      md5: 1dc02e5668c96ebd73776a5d4af2d8c6
-      size: 326510
-    - path: src/train.py
-      hash: md5
-      md5: f3be768171d6a1a74eb3704c6909421b
-      size: 2057
-    outs:
-    - path: model/modelXGB.joblib
-      hash: md5
-      md5: 427841b7847a738b470aead5e4d798ea
-      size: 577265
   trainRF:
     cmd: python src/train.py RandomForest
     deps:
@@ -46,20 +30,46 @@ stages:
       size: 326510
     - path: src/train.py
       hash: md5
-      md5: f3be768171d6a1a74eb3704c6909421b
-      size: 2057
+      md5: 1cc4180029d4c4d4fb6814910313404d
+      size: 2077
+    params:
+      params.yaml:
+        paramsRF.criterion: ”gini”
+        paramsRF.max_depth: 5
+        paramsRF.n_estimators: 100
     outs:
     - path: model/modelRF.joblib
       hash: md5
-      md5: d0547f3f89bfac6979bf041f2cdae4a0
-      size: 111176
+      md5: 77e7e0bcbf525d779b029cb8b4598842
+      size: 111175
+  trainXGB:
+    cmd: python src/train.py XGBoost
+    deps:
+    - path: data/prepared/train.csv
+      hash: md5
+      md5: 1dc02e5668c96ebd73776a5d4af2d8c6
+      size: 326510
+    - path: src/train.py
+      hash: md5
+      md5: 1cc4180029d4c4d4fb6814910313404d
+      size: 2077
+    params:
+      params.yaml:
+        paramsXGB.learning_rate: 0.1
+        paramsXGB.max_depth: 5
+        paramsXGB.n_estimators: 100
+    outs:
+    - path: model/modelXGB.joblib
+      hash: md5
+      md5: 427841b7847a738b470aead5e4d798ea
+      size: 577265
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: model/modelRF.joblib
       hash: md5
-      md5: d0547f3f89bfac6979bf041f2cdae4a0
-      size: 111176
+      md5: 77e7e0bcbf525d779b029cb8b4598842
+      size: 111175
     - path: model/modelXGB.joblib
       hash: md5
       md5: 427841b7847a738b470aead5e4d798ea
@@ -71,7 +81,7 @@ stages:
     outs:
     - path: metrics/metrics_RF.json
       hash: md5
-      md5: f3e1e5536909e8ddf8619b5f876c9340
+      md5: e219aa5f2bbba8da75ac99f938dfc4f0
       size: 127
     - path: metrics/metrics_XGB.json
       hash: md5

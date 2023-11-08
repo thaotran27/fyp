@@ -7,20 +7,28 @@ stages:
     outs:
     - data/prepared/test.csv
     - data/prepared/train.csv
-  trainXGB:
-    cmd: python src/train.py XGBoost
-    deps:
-    - data/prepared/train.csv
-    - src/train.py
-    outs:
-    - model/modelXGB.joblib
   trainRF:
     cmd: python src/train.py RandomForest
     deps:
     - data/prepared/train.csv
     - src/train.py
+    params:
+    - paramsRF.criterion
+    - paramsRF.max_depth
+    - paramsRF.n_estimators
     outs:
     - model/modelRF.joblib
+  trainXGB:
+    cmd: python src/train.py XGBoost
+    deps:
+    - data/prepared/train.csv
+    - src/train.py
+    params:
+    - paramsXGB.learning_rate
+    - paramsXGB.max_depth
+    - paramsXGB.n_estimators
+    outs:
+    - model/modelXGB.joblib
   evaluate:
     cmd: python src/evaluate.py
     deps:
