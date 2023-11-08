@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 import sys
+from micromlgen import port
 
 def load_data(data_path):
     dataset_train = pd.read_csv(data_path)
@@ -35,17 +36,21 @@ def main(repo_path):
     model_name = sys.argv[1]
     classifier = get_model(X_train, y_train, model_name)
     print(repo_path)
+
+
+    classmap = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'O', 5: 'S'}
+    c_code = port(classifier, classmap=classmap)
+
     if(model_name == "RandomForest"):
         dump(classifier, repo_path / "model/modelRF.joblib")
+        f = open("/Users/haihongyu/Desktop/fyp/Hardware/real_time_sensor_plot/RandomForest.h", "w")
+        f.write(c_code)
+        f.close()
     if(model_name == "XGBoost"):
         dump(classifier, repo_path / "model/modelXGB.joblib")
-    '''
-    train_csv_path = repo_path / "data/prepared/train.csv"
-    train_data, labels = load_data(train_csv_path)
-    sgd = SGDClassifier(max_iter=10)
-    trained_model = sgd.fit(train_data, labels)
-    dump(trained_model, repo_path / "model/model.joblib")
-    '''
+        f = open("/Users/haihongyu/Desktop/fyp/Hardware/real_time_sensor_plot/XGBoost.h", "w")
+        f.write(c_code)
+        f.close()
 
 if __name__ == "__main__":
     repo_path = Path(__file__).parent.parent

@@ -30,8 +30,8 @@ stages:
       size: 326510
     - path: src/train.py
       hash: md5
-      md5: 9e7010f4d9b168bfd2221de2f135f65d
-      size: 1903
+      md5: f3be768171d6a1a74eb3704c6909421b
+      size: 2057
     outs:
     - path: model/modelXGB.joblib
       hash: md5
@@ -46,8 +46,8 @@ stages:
       size: 326510
     - path: src/train.py
       hash: md5
-      md5: 9e7010f4d9b168bfd2221de2f135f65d
-      size: 1903
+      md5: f3be768171d6a1a74eb3704c6909421b
+      size: 2057
     outs:
     - path: model/modelRF.joblib
       hash: md5
@@ -66,8 +66,8 @@ stages:
       size: 577265
     - path: src/evaluate.py
       hash: md5
-      md5: aee6000747efebd1a1ff1e0176dcfd28
-      size: 2150
+      md5: 514e5234b2acc30be5def3ec8a233780
+      size: 2118
     outs:
     - path: metrics/metrics_RF.json
       hash: md5

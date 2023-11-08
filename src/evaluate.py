@@ -6,7 +6,6 @@ import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from train import load_data
 import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn import metrics
 
 
