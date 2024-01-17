@@ -55,7 +55,7 @@ def main(repo_path):
     df_concatenated = concat_files(source_path, new_file, label)
     print('Done concatenating')
     save_as_csv(df_concatenated, source_path / "{}.csv".format(label))
-    print('Done saving csv. Now do "dvc add your-label.csv" and "dvc push" and "git add new-dvc-file"')
+    print('Done saving csv. Now do "dvc add data/raw/your-label.csv" and "dvc push" and "git add new-dvc-file"')
 
 if __name__ == "__main__":
     repo_path = Path(__file__).parent.parent

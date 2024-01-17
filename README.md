@@ -117,7 +117,7 @@ For example you want to add file static_data/O_not_clean.csv with the label "O"
 - Run clean.py to clean that data and add it to the back of the official data file in data/raw.
 
 ```
-src/clean.py static_data/O_not_clean.csv O
+python src/clean.py static_data/O_not_clean.csv O
 ```
 
 -	Update the dataset:
