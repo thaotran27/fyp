@@ -39,16 +39,17 @@ def main(repo_path):
 
 
     classmap = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'O', 5: 'S'}
-    c_code = port(classifier, classmap=classmap)
+    c_code_path = repo_path / "cheader"
+    c_code = port(classifier, classmap=classmap, tmp_file = c_code_path / 'xgboost.json')
 
     if(model_name == "RandomForest"):
         dump(classifier, repo_path / "model/modelRF.joblib")
-        f = open("/Users/haihongyu/Desktop/fyp/Hardware/real_time_sensor_plot/RandomForest.h", "w")
+        f = open(c_code_path / "RandomForest.h", "w")
         f.write(c_code)
         f.close()
     if(model_name == "XGBoost"):
         dump(classifier, repo_path / "model/modelXGB.joblib")
-        f = open("/Users/haihongyu/Desktop/fyp/Hardware/real_time_sensor_plot/XGBoost.h", "w")
+        f = open( c_code_path / "XGBoost.h", "w")
         f.write(c_code)
         f.close()
 
