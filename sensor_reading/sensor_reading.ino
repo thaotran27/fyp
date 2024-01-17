@@ -5,8 +5,8 @@ const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
 const int FLEX_PINKY = A8;
- /*
-// right hand
+
+/* right hand
 const int FLEX_THUMB = A8;
 const int FLEX_INDEX = A3;
 const int FLEX_MIDDLE = A2;
@@ -138,11 +138,11 @@ void loop()
   delay(2000);
   Serial.println("Do A");
   delay(500);
-  for (int i=0;i<10;i++){
+  for (int i=0;i<20;i++){
     Serial.printf("A,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
     ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
     gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
-    delay(100);
+    delay(50); //frequency 20hz
   }
 
 
