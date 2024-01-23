@@ -5,11 +5,11 @@
 import pandas as pd
 import sys
 from pathlib import Path
+from io import StringIO
 
-columns_names = names=["label","Thumb","Index","Middle","Ring","Pinky","ax","ay","az","gx","gy","gz"]
+columns_names = ["label","Thumb","Index","Middle","Ring","Pinky","ax","ay","az","gx","gy","gz"]
 
 def concat_files(source_path, new_file, label):
-
     df_new = pd.read_csv(new_file, names=columns_names)
     df_new = df_new.dropna(axis=0)
     df_new = df_new.iloc[:, 1:].apply(pd.to_numeric, errors='coerce').dropna()

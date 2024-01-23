@@ -45,7 +45,7 @@ def main(repo_path):
     print(repo_path)
 
     c_code_path = repo_path / "cheader"
-    c_code = port(classifier, classmap=classmap)
+    c_code = port(classifier, classmap=classmap, tmp_file = c_code_path / 'xgboost.json')
 
     if(model_name == "RandomForest"):
         # store model in pipeline
