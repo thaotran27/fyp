@@ -22,10 +22,10 @@ void setup() {
     }
   }
   Serial.println("LSM6DSOX Found!");
-  sox.setAccelDataRate(LSM6DS_RATE_416_HZ);
-  sox.setGyroDataRate(LSM6DS_RATE_416_HZ);
+  sox.setAccelDataRate(LSM6DS_RATE_833_HZ);
+  sox.setGyroDataRate(LSM6DS_RATE_833_HZ);
 
-  filter.begin(4);
+  filter.begin(1);
 
   // Set the accelerometer range to 2G
   sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
@@ -33,7 +33,7 @@ void setup() {
   sox.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS );
 
   // initialize variables to pace updates to correct rate
-  microsPerReading = 1000000 / 10;
+  microsPerReading = 1000000 / 1;
   microsPrevious = micros();
 }
 
@@ -43,31 +43,7 @@ void loop() {
   sensors_event_t gyro;
   sensors_event_t temp;
   sox.getEvent(&accel, &gyro, &temp);
-
-  Serial.print("\t\tTemperature ");
-  Serial.print(temp.temperature);
-  Serial.println(" deg C");
-
-  /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("\t\tAccel X: ");
-  Serial.print(accel.acceleration.x);
-  Serial.print(" \tY: ");
-  Serial.print(accel.acceleration.y);
-  Serial.print(" \tZ: ");
-  Serial.print(accel.acceleration.z);
-  Serial.println(" m/s^2 ");
-
-  /* Display the results (rotation is measured in rad/s) */
-  Serial.print("\t\tGyro X: ");
-  Serial.print(gyro.gyro.x);
-  Serial.print(" \tY: ");
-  Serial.print(gyro.gyro.y);
-  Serial.print(" \tZ: ");
-  Serial.print(gyro.gyro.z);
-  Serial.println(" radians/s ");
-  Serial.println();
-
-  delay(100);
+  
   
   int aix, aiy, aiz;
   int gix, giy, giz;
@@ -103,6 +79,27 @@ void loop() {
     pitch = filter.getPitch();
     heading = filter.getYaw();
     Serial.printf("Orientation: roll:%f  pitch:%f  yaw:%f\n", roll, pitch, heading);
+
+    Serial.print("\t\tTemperature ");
+    Serial.print(temp.temperature);
+    Serial.println(" deg C");
+
+    Serial.print("\t\tAccel X: ");
+    Serial.print(accel.acceleration.x);
+    Serial.print(" \tY: ");
+    Serial.print(accel.acceleration.y);
+    Serial.print(" \tZ: ");
+    Serial.print(accel.acceleration.z);
+    Serial.println(" m/s^2 ");
+
+    Serial.print("\t\tGyro X: ");
+    Serial.print(gyro.gyro.x);
+    Serial.print(" \tY: ");
+    Serial.print(gyro.gyro.y);
+    Serial.print(" \tZ: ");
+    Serial.print(gyro.gyro.z);
+    Serial.println(" radians/s ");
+    Serial.println();
 
     // increment previous time, so we keep proper pace
     microsPrevious = microsPrevious + microsPerReading;
