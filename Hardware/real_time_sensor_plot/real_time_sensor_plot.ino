@@ -1,5 +1,4 @@
 #include <Adafruit_LSM6DSOX.h>
-#include "RandomForest.h"
 #include "XGBoost.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
@@ -153,7 +152,7 @@ void loop()
   sensors_event_t temp;
   sox.getEvent(&accel, &gyro, &temp);
 
-  Serial.printf("A,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+  Serial.printf("%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
   ring.readBendness(),pinky.readBendness(), accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
   gyro.gyro.x, gyro.gyro.y, gyro.gyro.z);
   classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
