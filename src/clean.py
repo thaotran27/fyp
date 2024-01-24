@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from io import StringIO
 
-columns_names = ["label","Thumb","Index","Middle","Ring","Pinky","ax","ay","az","gx","gy","gz"]
+columns_names = ["label","Thumb","Index","Middle","Ring","Pinky","Pitch","Roll"]
 
 def concat_files(source_path, new_file, label):
     df_new = pd.read_csv(new_file, names=columns_names)
