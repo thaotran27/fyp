@@ -13,11 +13,11 @@ from micromlgen import port
 
 # some models e.g.XGBoost need integer index as label
 
-classmap = {0:'a', 1:'b', 2:'c', 3:'d', 4:'e', 
-            5:'f', 6:'g', 7:'h', 8:'i', 9:'j',
-            10:'k', 11:'l', 12:'m', 13:'n', 14:'o', 
-            15:'p', 16:'q', 17:'r', 18:'s', 19:'t', 
-            20:'u', 21:'v', 22:'w', 23:'x', 24:'y', 25:'z'}
+classmap = {0:'A', 1:'B', 2:'C', 3:'D', 4:'E', 
+            5:'F', 6:'G', 7:'H', 8:'I', 9:'J',
+            10:'K', 11:'L', 12:'M', 13:'N', 14:'O', 
+            15:'P', 16:'Q', 17:'R', 18:'S', 19:'T', 
+            20:'U', 21:'V', 22:'W', 23:'X', 24:'Y', 25:'Z'}
 
 #classmap = {0:'C', 1:'D', 2:'O', 3:'S', 4:'T', 5:'Z'}
 reverse_classmap = {v: k for k, v in classmap.items()}
@@ -40,8 +40,8 @@ def get_model(X_train, y_train, model_name):
         clf = XGBClassifier(n_estimators=20, max_depth=5, learning_rate=0.1)
         clf.fit(X_train, y_train_encoded)
 
-    if(model_name == "SVC"):  y_train_encoded = np.array([reverse_classmap[value] for value in y_train])
-        clf = SVC()
+    if(model_name == "SVC"):
+        clf = SVC(gamma=0.001)
         clf.fit(X_train, y_train)
     return clf
 

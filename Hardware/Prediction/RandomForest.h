@@ -9529,57 +9529,57 @@ namespace Eloquent {
                     const char* idxToLabel(uint8_t classIdx) {
                         switch (classIdx) {
                             case 0:
-                            return "a";
+                            return "A";
                             case 1:
-                            return "b";
+                            return "B";
                             case 2:
-                            return "c";
+                            return "C";
                             case 3:
-                            return "d";
+                            return "D";
                             case 4:
-                            return "e";
+                            return "E";
                             case 5:
-                            return "f";
+                            return "F";
                             case 6:
-                            return "g";
+                            return "G";
                             case 7:
-                            return "h";
+                            return "H";
                             case 8:
-                            return "i";
+                            return "I";
                             case 9:
-                            return "j";
+                            return "J";
                             case 10:
-                            return "k";
+                            return "K";
                             case 11:
-                            return "l";
+                            return "L";
                             case 12:
-                            return "m";
+                            return "M";
                             case 13:
-                            return "n";
+                            return "N";
                             case 14:
-                            return "o";
+                            return "O";
                             case 15:
-                            return "p";
+                            return "P";
                             case 16:
-                            return "q";
+                            return "Q";
                             case 17:
-                            return "r";
+                            return "R";
                             case 18:
-                            return "s";
+                            return "S";
                             case 19:
-                            return "t";
+                            return "T";
                             case 20:
-                            return "u";
+                            return "U";
                             case 21:
-                            return "v";
+                            return "V";
                             case 22:
-                            return "w";
+                            return "W";
                             case 23:
-                            return "x";
+                            return "X";
                             case 24:
-                            return "y";
+                            return "Y";
                             case 25:
-                            return "z";
+                            return "Z";
                             default:
                             return "Houston we have a problem";
                         }

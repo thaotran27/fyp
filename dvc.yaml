@@ -29,14 +29,24 @@ stages:
     - paramsXGB.n_estimators
     outs:
     - model/modelXGB.joblib
+  trainSVC:
+    cmd: python src/train.py SVC
+    deps:
+    - data/prepared/train.csv
+    - src/train.py
+    outs:
+    - model/modelSVC.joblib
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - model/modelRF.joblib
+    - model/modelSVC.joblib
     - model/modelXGB.joblib
     - src/evaluate.py
     metrics:
     - metrics/metrics_RF.json:
+        cache: false
+    - metrics/metrics_SVC.json:
         cache: false
     - metrics/metrics_XGB.json:
         cache: false
