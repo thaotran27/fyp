@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from sklearn.svm import SVC
 import sys
 from micromlgen import port
 
@@ -38,6 +39,10 @@ def get_model(X_train, y_train, model_name):
         y_train_encoded = np.array([reverse_classmap[value] for value in y_train])
         clf = XGBClassifier(n_estimators=50, max_depth=5, learning_rate=0.1)
         clf.fit(X_train, y_train_encoded)
+
+    if(model_name == "SVC"):  y_train_encoded = np.array([reverse_classmap[value] for value in y_train])
+        clf = SVC()
+        clf.fit(X_train, y_train)
     return clf
 
 def main(repo_path):
@@ -63,6 +68,14 @@ def main(repo_path):
         dump(classifier, repo_path / "model/modelXGB.joblib")
         # output header file for model
         f = open( c_code_path / "XGBoost.h", "w")
+        f.write(c_code)
+        f.close()
+
+    if(model_name == "SVC"):
+        # store model in pipeline
+        dump(classifier, repo_path / "model/modelSVC.joblib")
+        # output header file for model
+        f = open( c_code_path / "SVC.h", "w")
         f.write(c_code)
         f.close()
 

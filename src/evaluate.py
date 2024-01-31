@@ -42,6 +42,15 @@ def main(repo_path):
                   'Recall': recall_score(labels, predictions_XGB_decoded, average='weighted')}
     metrics_path_XGB = repo_path / "metrics/metrics_XGB.json"
     metrics_path_XGB.write_text(json.dumps(metrics_XGB))
+
+    # prediction and evaluation of SVC
+    predictions_SVC = model_SVC.predict(test_data)
+    metrics_SVC = {'Accuracy': accuracy_score(labels, predictions_SVC), 
+                  'f1-score': f1_score(labels, predictions_SVC, average='weighted'), 
+                  'Precision': precision_score(labels, predictions_SVC, average='weighted'),
+                  'Recall': recall_score(labels, predictions_SVC, average='weighted')}
+    metrics_path_SVC = repo_path / "metrics/metrics_SVC.json"
+    metrics_path_SVC.write_text(json.dumps(metrics_SVC))
     
 
     # display heatmap
@@ -49,6 +58,8 @@ def main(repo_path):
     disp1.figure_.savefig('confusion_matrix/confusion_matrix_RF.png')
     disp2 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_XGB_decoded)
     disp2.figure_.savefig('confusion_matrix/confusion_matrix_XGB.png')
+    disp3 = metrics.ConfusionMatrixDisplay.from_predictions(labels, predictions_SVC)
+    disp3.figure_.savefig('confusion_matrix/confusion_matrix_SVC.png')
 
 if __name__ == "__main__":
     repo_path = Path(__file__).parent.parent
