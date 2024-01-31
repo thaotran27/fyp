@@ -10,6 +10,8 @@ from xgboost import XGBClassifier
 from sklearn.svm import SVC
 import sys
 from micromlgen import port
+import emlearn
+
 
 # some models e.g.XGBoost need integer index as label
 
@@ -54,7 +56,10 @@ def main(repo_path):
 
     #c_code_path = repo_path / "cheader"
     c_code_path = repo_path / "Hardware" / "Prediction"
-    c_code = port(classifier, classmap=classmap, tmp_file = c_code_path / 'xgboost.json')
+    # c_code = port(classifier, classmap=classmap, tmp_file = c_code_path / 'xgboost.json')
+    cmodel = emlearn.convert(classifier, method='inline')
+    cmodel.save(file=c_code_path / 'SVC.h', name='SVC')
+
 
     if(model_name == "RandomForest"):
         # store model in pipeline
