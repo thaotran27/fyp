@@ -168,7 +168,7 @@ void setup()
   microsPerReading = 1000000 / 10;
   microsPrevious = micros();
   //change the microsperPrinting for frequency:
-  microsPerPrinting = 1000000 / 20;
+  microsPerPrinting = 1000000 / 10;
   microsPreviousPrinting = micros();
   counterPrinting = 0;
  }
@@ -220,10 +220,18 @@ void loop()
   //counter: 41 do A
   //counter: 41-60: SerialPrint
   if (microsNowPrinting - microsPreviousPrinting >= microsPerPrinting) {
-    Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
-    ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
-    classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
-    ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
+    if(counterPrinting == 0){
+      Serial.println("Straighten your fingers");
+      Serial.println("Recording starts in 2s");
+    } else if (counterPrinting <= 40) {
+      //do nothing
+    } else {
+      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+      ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
+      classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+      ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
+    }
+    counterPrinting = (counterPrinting+1) % 80;
     microsPreviousPrinting = microsPreviousPrinting + microsPerPrinting;
   }
 
