@@ -1,0 +1,5 @@
+outs:
+- md5: 285d3df7714b64ab137414ea4da9ac25
+  size: 11358
+  hash: md5
+  path: w.csv

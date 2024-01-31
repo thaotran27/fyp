@@ -1,0 +1,5 @@
+outs:
+- md5: 2f821bc4311d504dea28e65c25d68ac4
+  size: 7730
+  hash: md5
+  path: z.csv

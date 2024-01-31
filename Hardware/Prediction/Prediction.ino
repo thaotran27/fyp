@@ -1,10 +1,10 @@
 #include <Adafruit_LSM6DSOX.h>
 #include <MadgwickAHRS.h>
-#include "XGBoost.h"
+#include "SVC.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
 //Eloquent::ML::Port::RandomForest classifier;
-Eloquent::ML::Port::XGBClassifier classifier;
+Eloquent::ML::Port::SVM classifier;
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
