@@ -5,9 +5,9 @@ stages:
     deps:
     - path: data/raw
       hash: md5
-      md5: 0404da3957b242bcdc6b34af90c93ca9.dir
-      size: 69053
-      nfiles: 7
+      md5: 56e43b8dccdce4c5c4efba056ee1283f.dir
+      size: 288491
+      nfiles: 53
     - path: src/prepare.py
       hash: md5
       md5: e2546b1d98955128de1e5ca6abef9671
@@ -15,23 +15,23 @@ stages:
     outs:
     - path: data/prepared/test.csv
       hash: md5
-      md5: ffda7e48cb6dfe029294b86ce54cc7c4
-      size: 26781
+      md5: bd2fed9dfb063171defc4f231929787b
+      size: 101743
     - path: data/prepared/train.csv
       hash: md5
-      md5: 9a6427ff652a73e378450b176880a319
-      size: 54211
+      md5: 646f9d1f5f9c44b98f0fac014b606a79
+      size: 206691
   trainRF:
     cmd: python src/train.py RandomForest
     deps:
     - path: data/prepared/train.csv
       hash: md5
-      md5: 9a6427ff652a73e378450b176880a319
-      size: 54211
+      md5: 646f9d1f5f9c44b98f0fac014b606a79
+      size: 206691
     - path: src/train.py
       hash: md5
-      md5: dd745c765c83ac59596d6db0e6f8e4e9
-      size: 2515
+      md5: e4021fc9cfb066c1b2a269e67fd7ff92
+      size: 2510
     params:
       params.yaml:
         paramsRF.criterion: ”gini”
@@ -40,19 +40,19 @@ stages:
     outs:
     - path: model/modelRF.joblib
       hash: md5
-      md5: 19ae09c2852088e98794c067b0edd5d0
-      size: 289193
+      md5: 38ba22df435512fb0ea8a1689b2ca7fb
+      size: 920009
   trainXGB:
     cmd: python src/train.py XGBoost
     deps:
     - path: data/prepared/train.csv
       hash: md5
-      md5: 9a6427ff652a73e378450b176880a319
-      size: 54211
+      md5: 646f9d1f5f9c44b98f0fac014b606a79
+      size: 206691
     - path: src/train.py
       hash: md5
-      md5: dd745c765c83ac59596d6db0e6f8e4e9
-      size: 2515
+      md5: e4021fc9cfb066c1b2a269e67fd7ff92
+      size: 2510
     params:
       params.yaml:
         paramsXGB.learning_rate: 0.1
@@ -61,29 +61,29 @@ stages:
     outs:
     - path: model/modelXGB.joblib
       hash: md5
-      md5: 6fbeee9a59bbb40780dae0fdb03bbfbc
-      size: 257039
+      md5: 5c6522b607ca66523b944796904f6d3b
+      size: 1171841
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: model/modelRF.joblib
       hash: md5
-      md5: 19ae09c2852088e98794c067b0edd5d0
-      size: 289193
+      md5: 38ba22df435512fb0ea8a1689b2ca7fb
+      size: 920009
     - path: model/modelXGB.joblib
       hash: md5
-      md5: 6fbeee9a59bbb40780dae0fdb03bbfbc
-      size: 257039
+      md5: 5c6522b607ca66523b944796904f6d3b
+      size: 1171841
     - path: src/evaluate.py
       hash: md5
-      md5: 6673c72ea0963db2e0cf0d920b044dd8
-      size: 2551
+      md5: c2752490d066dc9c7e7c1aa1aad89809
+      size: 2544
     outs:
     - path: metrics/metrics_RF.json
       hash: md5
-      md5: 320d7a353957611aff5ffe06b8c74a68
-      size: 67
+      md5: d2648d80795c3e7595a354a48f19ed86
+      size: 125
     - path: metrics/metrics_XGB.json
       hash: md5
-      md5: 320d7a353957611aff5ffe06b8c74a68
-      size: 67
+      md5: 194466289326d030dc2db0a55ec7a27c
+      size: 127

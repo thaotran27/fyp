@@ -1,0 +1,5 @@
+outs:
+- md5: 31c8c30612a7f4e0d9e30de104a93d19
+  size: 10608
+  hash: md5
+  path: R.csv
