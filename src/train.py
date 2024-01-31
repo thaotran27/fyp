@@ -37,7 +37,7 @@ def get_model(X_train, y_train, model_name):
 
     if(model_name == "XGBoost"):
         y_train_encoded = np.array([reverse_classmap[value] for value in y_train])
-        clf = XGBClassifier(n_estimators=20, max_depth=5, learning_rate=0.1)
+        clf = XGBClassifier(n_estimators=100, max_depth=5, learning_rate=0.1)
         clf.fit(X_train, y_train_encoded)
 
     if(model_name == "SVC"):

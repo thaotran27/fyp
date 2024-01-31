@@ -1,10 +1,10 @@
 #include <Adafruit_LSM6DSOX.h>
 #include <MadgwickAHRS.h>
-#include "RandomForest.h"
+#include "XGBoost.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
-Eloquent::ML::Port::RandomForest classifier;
-//Eloquent::ML::Port::XGBClassifier classifier;
+//Eloquent::ML::Port::RandomForest classifier;
+Eloquent::ML::Port::XGBClassifier classifier;
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
@@ -220,22 +220,10 @@ void loop()
   //counter: 41 do A
   //counter: 41-60: SerialPrint
   if (microsNowPrinting - microsPreviousPrinting >= microsPerPrinting) {
-    if(counterPrinting == 0){
-      Serial.println("Straighten your fingers");
-      Serial.println("Recording starts in 2s");
-    } else if (counterPrinting <= 40) {
-      //do nothing
-    } else if (counterPrinting == 41) {
-      Serial.println("Do A");
-    } else if (counterPrinting <= 60) {
-      //do nothing
-    } else {
-      Serial.printf("A,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
-      ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
-      classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
-      ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
-    }
-    counterPrinting = (counterPrinting+1) % 80;
+    Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+    ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
+    classify(thumb.readBendness(),findex.readBendness(), middle.readBendness(), 
+    ring.readBendness(),pinky.readBendness(), filter.getRoll(), filter.getPitch());
     microsPreviousPrinting = microsPreviousPrinting + microsPerPrinting;
   }
 

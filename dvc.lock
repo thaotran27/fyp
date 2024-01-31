@@ -109,5 +109,5 @@ stages:
       size: 67
     - path: metrics/metrics_XGB.json
       hash: md5
-      md5: b7d5fedfb59eed354f3b84b292328a22
-      size: 127
+      md5: 320d7a353957611aff5ffe06b8c74a68
+      size: 67
