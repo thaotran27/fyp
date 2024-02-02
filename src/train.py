@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from xgboost import XGBClassifier
 from sklearn.svm import SVC
 import sys
@@ -45,6 +46,9 @@ def get_model(X_train, y_train, model_name):
     if(model_name == "SVC"):
         clf = SVC(gamma=0.001)
         clf.fit(X_train, y_train)
+
+    if(model_name == "MLP"):
+        clf = MLPClassifier(random_state=1, max_iter=300).fit(X_train, y_train)
     return clf
 
 def main(repo_path):
@@ -58,7 +62,7 @@ def main(repo_path):
     c_code_path = repo_path / "Hardware" / "Prediction"
     # c_code = port(classifier, classmap=classmap, tmp_file = c_code_path / 'xgboost.json')
     cmodel = emlearn.convert(classifier, method='inline')
-    cmodel.save(file=c_code_path / 'SVC.h', name='SVC')
+    cmodel.save(file=c_code_path / 'MLP.h', name='MLP')
 
 
     if(model_name == "RandomForest"):
@@ -84,6 +88,7 @@ def main(repo_path):
         f = open( c_code_path / "SVC.h", "w")
         f.write(c_code)
         f.close()
+
 
 if __name__ == "__main__":
     repo_path = Path(__file__).parent.parent

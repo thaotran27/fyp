@@ -1,16 +1,97 @@
 #include <Adafruit_LSM6DSOX.h>
 #include <MadgwickAHRS.h>
-#include "SVC.h"
+#include "MLP.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
 //Eloquent::ML::Port::RandomForest classifier;
-Eloquent::ML::Port::SVM classifier;
+//Eloquent::ML::Port::SVM classifier;
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
 
     Serial.print("Predicted class: ");
-    Serial.println(classifier.predictLabel(x_sample));
+    int32_t prediction = MLP_predict(x_sample, 7);
+    switch (prediction) {
+      case 0:
+        Serial.println("A");
+        break;
+      case 1:
+        Serial.println("B");
+        break;
+      case 2:
+        Serial.println("C");
+        break;
+      case 3:
+        Serial.println("D");
+        break;
+      case 4:
+        Serial.println("E");
+        break;
+      case 5:
+        Serial.println("F");
+        break;
+      case 6:
+        Serial.println("G");
+        break;
+      case 7:
+        Serial.println("H");
+        break;
+      case 8:
+        Serial.println("I");
+        break;
+      case 9:
+        Serial.println("J");
+        break;
+      case 10:
+        Serial.println("K");
+        break;
+      case 11:
+        Serial.println("L");
+        break;
+      case 12:
+        Serial.println("M");
+        break;
+      case 13:
+        Serial.println("N");
+        break;
+      case 14:
+        Serial.println("O");
+        break;
+      case 15:
+        Serial.println("P");
+        break;
+      case 16:
+        Serial.println("Q");
+        break;
+      case 17:
+        Serial.println("R");
+        break;
+      case 18:
+        Serial.println("S");
+        break;
+      case 19:
+        Serial.println("T");
+        break;
+      case 20:
+        Serial.println("U");
+        break;
+      case 21:
+        Serial.println("V");
+        break;
+      case 22:
+        Serial.println("W");
+        break;
+      case 23:
+        Serial.println("X");
+        break;
+      case 24:
+        Serial.println("Y");
+        break;
+      case 25:
+        Serial.println("Z");
+        break;
+    }
+    //Serial.println(classifier.predictLabel(x_sample));
 }
 
 // left hand
