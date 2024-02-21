@@ -46,7 +46,7 @@ def save_as_csv(filenames, destination):
 
 def main(repo_path):
     if len(sys.argv) != 3:
-        print("Usage: python add_numbers.py <num1> <num2>")
+        print("Usage: python clean.py <csv file> <label>")
         sys.exit(1)
     data_path = repo_path / "data"
     source_path = data_path / "raw"
