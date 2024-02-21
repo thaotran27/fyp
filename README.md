@@ -39,11 +39,11 @@ virtualenv venv
 
 For Windows:
 ```
-.\venv\Scripts\activate.bat
+.\venv\Scripts\activate
 ```
 or 
 ```
-.\venv\Scripts\activate
+
 ```
 For Mac
 ```
