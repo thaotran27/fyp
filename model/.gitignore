@@ -1,5 +1,3 @@
 /modelRF
 /modelXGB
-/modelRF.joblib
-/modelXGB.joblib
-/modelSVC.joblib
+/modelMLP.joblib

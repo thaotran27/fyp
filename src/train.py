@@ -49,10 +49,9 @@ def get_model(X_train, y_train, model_name):
         clf.fit(X_train, y_train)
 
     if(model_name == "MLP"):
-        parameters = {'solver': ['lbfgs', 'sgd', 'adam'], 
-                    'max_iter': [200, 500, 1000, 1500, 2000], 
-                    'alpha': 10.0 ** -np.arange(1, 10), 
-                    'hidden_layer_sizes': [(50, 100) (100,), (50, 100, 50)], 
+        parameters = {'solver': ['sgd', 'adam'], 
+                    'max_iter': [500, 1000, 2000], 
+                    'hidden_layer_sizes': [(50, 100), (100,), (50, 100, 50)], 
                     'activation': ['identity', 'logistic', 'tanh', 'relu']}
         clf = GridSearchCV(MLPClassifier(), parameters, n_jobs=-1)
         clf.fit(X_train, y_train)
