@@ -6,6 +6,7 @@
 //Eloquent::ML::Port::RandomForest classifier;
 //Eloquent::ML::Port::SVM classifier;
 
+
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
 
@@ -94,20 +95,21 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float p
     //Serial.println(classifier.predictLabel(x_sample));
 }
 
-// left hand
+/* left hand
 const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
 const int FLEX_PINKY = A8;
+*/
 
-/* right hand
+// right hand
 const int FLEX_THUMB = A8;
 const int FLEX_INDEX = A3;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
 const int FLEX_PINKY = A0;
-*/
+
 
 const float VCC = 3.3; 
 const float R_DIV =100000.0;

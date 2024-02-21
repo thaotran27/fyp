@@ -17,8 +17,8 @@ for %%w in (%word_list%) do (
         dvc remove "!output_dir!/!current_word!.csv.dvc" || (
             echo Error removing DVC file for !current_word! >> "!log_file!"
         )
-        dvc remove "!output_dir!/!current_word!.csv" || (
-            echo Error removing DVC file for !current_word! >> "!log_file!"
+        del "!output_dir!/!current_word!.csv" || (
+            echo Error removing file for !current_word! >> "!log_file!"
         )
     )
 )
