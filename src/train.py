@@ -49,14 +49,19 @@ def get_model(X_train, y_train, model_name):
         clf.fit(X_train, y_train)
 
     if(model_name == "MLP"):
-        parameters = {'solver': ['sgd', 'adam'], 
-                    'max_iter': [500, 1000, 2000], 
-                    'hidden_layer_sizes': [(50, 100), (100,), (50, 100, 50)], 
-                    'activation': ['identity', 'logistic', 'tanh', 'relu']}
+        parameters = {'solver': ['adam'], 
+                    'max_iter': [500], 
+                    'hidden_layer_sizes': [(50, 100)], 
+                    'activation': ['tanh', 'relu']}
         clf = GridSearchCV(MLPClassifier(), parameters, n_jobs=-1)
         clf.fit(X_train, y_train)
-        print(clf.get_params())
-    return clf
+        optimal_param = clf.get_params()
+        print(optimal_param)
+        optimal_clf = MLPClassifier(solver=optimal_param['estimator__solver'], 
+                                    max_iter=optimal_param['estimator__max_iter'],
+                                    hidden_layer_sizes=optimal_param['estimator__hidden_layer_sizes'],
+                                    activation=optimal_param['estimator__activation']).fit(X_train, y_train)
+    return optimal_clf
 
 def main(repo_path):
     train_csv_path = repo_path / "data/prepared/train.csv"
