@@ -49,13 +49,17 @@ def get_model(X_train, y_train, model_name):
         clf.fit(X_train, y_train)
 
     if(model_name == "MLP"):
+        clf = MLPClassifier(random_state=1, max_iter=300).fit(X_train, y_train)
+        '''Grid search code here
         parameters = {'solver': ['sgd', 'adam'], 
-                    'max_iter': [500, 1000, 2000], 
+                    'max_iter': [1000, 2000], 
                     'hidden_layer_sizes': [(50, 100), (100,), (50, 100, 50)], 
-                    'activation': ['identity', 'logistic', 'tanh', 'relu']}
+                    'activation': ['logistic', 'tanh', 'relu'],
+                    'learning_rate_init': [0.01]}
         clf = GridSearchCV(MLPClassifier(), parameters, n_jobs=-1)
         clf.fit(X_train, y_train)
         print(clf.get_params())
+        '''
     return clf
 
 def main(repo_path):
@@ -95,6 +99,10 @@ def main(repo_path):
         f = open( c_code_path / "SVC.h", "w")
         f.write(c_code)
         f.close()
+    
+    if(model_name == "MLP"):
+        # store model in pipeline
+        dump(classifier, repo_path / "model/modelMLP.joblib")
 
 
 if __name__ == "__main__":

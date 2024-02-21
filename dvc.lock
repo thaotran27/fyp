@@ -21,3 +21,19 @@ stages:
       hash: md5
       md5: c58580817d47805942ed2848f14e9624
       size: 844089
+  trainMLP:
+    cmd: python src/train.py MLP
+    deps:
+    - path: data/prepared/train.csv
+      hash: md5
+      md5: c58580817d47805942ed2848f14e9624
+      size: 844089
+    - path: src/train.py
+      hash: md5
+      md5: e1362e853773bbb3e322f364d3490e2e
+      size: 3931
+    outs:
+    - path: model/modelMLP.joblib
+      hash: md5
+      md5: ed8ca724a59cf7ca0b0fa06f62228ca6
+      size: 91560
