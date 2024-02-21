@@ -269,7 +269,7 @@ void loop() {
   float ax, ay, az;
   float gx, gy, gz;
   float roll, pitch, heading;
-  float thumb_bend,findex_bend,middle_bend,ring_bend,pinky_bend,nroll,npitch; //Get readings for classification, bendness and Normalised Roll and pitch for prediction
+  float nroll,npitch; //Get readings for classification, bendness and Normalised Roll and pitch for prediction
 
   unsigned long microsNow;
 
