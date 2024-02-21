@@ -55,12 +55,12 @@ def get_model(X_train, y_train, model_name):
                     'activation': ['relu', 'logistic']}
         clf = GridSearchCV(MLPClassifier(), parameters, n_jobs=-1)
         clf.fit(X_train, y_train)
-        optimal_param = clf.get_params()
+        optimal_param = clf.best_params_
         print(optimal_param)
-        optimal_clf = MLPClassifier(solver=optimal_param['estimator__solver'], 
-                                    max_iter=optimal_param['estimator__max_iter'],
-                                    hidden_layer_sizes=optimal_param['estimator__hidden_layer_sizes'],
-                                    activation=optimal_param['estimator__activation']).fit(X_train, y_train)
+        optimal_clf = MLPClassifier(solver=optimal_param['solver'], 
+                                    max_iter=optimal_param['max_iter'],
+                                    hidden_layer_sizes=optimal_param['hidden_layer_sizes'],
+                                    activation=optimal_param['activation']).fit(X_train, y_train)
     return optimal_clf
 
 def main(repo_path):
