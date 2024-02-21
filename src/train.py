@@ -100,6 +100,10 @@ def main(repo_path):
         f = open( c_code_path / "SVC.h", "w")
         f.write(c_code)
         f.close()
+    
+    if(model_name == "MLP"):
+        # store model in pipeline
+        dump(classifier, repo_path / "model/modelMLP.joblib")
 
 
 if __name__ == "__main__":
