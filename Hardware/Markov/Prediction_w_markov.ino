@@ -7,13 +7,13 @@
 //Eloquent::ML::Port::SVM classifier;
 
 static int32_t last_class = 26; //initial assume previous class is blank
+static int32_t prediction_w_markov = 26;
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
     Serial.print("Predicted class: ");
     int32_t prediction = MLP_predict(x_sample, 7);
-    int32_t prediction_w_markov = MLP_predict_w_markov(x_sample, 7, last_class);
-    last_class = prediction_w_markov;
+    prediction_w_markov = MLP_predict_w_markov(x_sample, 7, last_class);
     switch (prediction_w_markov) {
       case 0:
         Serial.println("A");
@@ -395,7 +395,7 @@ void loop()
       new_data[5] = nroll;
       npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
       new_data[6] = npitch;
-      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+      //Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
       for (int i = 0; i < NUM_ROWS - 1; i++) {
           for (int j = 0; j < NUM_COLS; j++) {
             fdata[i][j] = fdata[i + 1][j]; // Shift each element up
@@ -409,7 +409,8 @@ void loop()
         predicted = *classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
         if (predicted!=prev_letter){
           Serial.println(predicted);
-          prev_letter=predicted;
+          prev_letter = predicted;
+          last_class = prediction_w_markov;
         }
         else {
           //Do nothing
