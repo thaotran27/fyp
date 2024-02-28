@@ -3,17 +3,27 @@ from pathlib import Path
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 
 def get_files_and_labels(source_path):
     dataframes = []
     columns = None
+
+    min_rows = 100000000
+    for csv_path in source_path.rglob("*.csv"):
+        filename = csv_path.absolute()
+        folder = csv_path.parent.name
+        df = pd.read_csv(csv_path)
+        min_rows = len(df) if len(df) < min_rows else min_rows
 
     for csv_path in source_path.rglob("*.csv"):
         filename = csv_path.absolute()
         folder = csv_path.parent.name
         df = pd.read_csv(csv_path)
         columns = df.columns.tolist()
-        df = df[1:]
+        df = shuffle(df)
+        #df = df[1:min_rows]
+        print(filename, len(df))
         dataframes.append(df)
     return pd.concat(dataframes)
 

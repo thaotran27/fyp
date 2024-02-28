@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "base_path=hh_wk5/hh_wk5"
+set "base_path=../New_Data_MLP/New_Data_MLP"
 set "script_path=./src/clean.py"
 set "output_dir=./data/raw"
 set "log_file=scripts/add_data_error_log.txt"
