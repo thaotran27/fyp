@@ -10,13 +10,9 @@
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
     Serial.print("Predicted class: ");
-<<<<<<< HEAD
+    
     int32_t prediction = MLP_predict(x_sample, 7)-1;
     switch (prediction) {
-=======
-    int32_t prediction = MLP_predict(x_sample, 7);
-    switch (prediction_w_markov) {
->>>>>>> 5864cfe6aee8fcf8b2bdbc957c923547a401c713
       case 0:
         Serial.println("A");
         Serial.println(MLP_buf2[0]);
@@ -87,7 +83,7 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float p
         break;
       case 17:
         Serial.println("R");
-        Serial.printf(MLP_buf2[17]);
+        Serial.println(MLP_buf2[17]);
         break;
       case 18:
         Serial.println("S");
@@ -99,11 +95,11 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float p
         break;
       case 20:
         Serial.println("U");
-        Serial.printf(MLP_buf2[20]);
+        Serial.println(MLP_buf2[20]);
         break;
       case 21:
         Serial.println("V");
-        Serial.printf(MLP_buf2[21]);
+        Serial.println(MLP_buf2[21]);
         break;
       case 22:
         Serial.println("W");
@@ -121,15 +117,10 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float p
         Serial.println("Z");
         Serial.println(MLP_buf2[25]);
         break;
-<<<<<<< HEAD
+
       case -1:
         Serial.println(" ");
         Serial.println(MLP_buf2[25]);
-=======
-      case 26:
-        Serial.println(" ");
-        Serial.println(MLP_buf2[26]);
->>>>>>> 5864cfe6aee8fcf8b2bdbc957c923547a401c713
         break;
     }
     //Serial.println(classifier.predictLabel(x_sample));
