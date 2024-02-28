@@ -10,6 +10,10 @@ static const EmlNetLayer MLP_layers[2] = {
 { 100, 7, MLP_layer_0_weights, MLP_layer_0_biases, EmlNetActivationRelu }, 
 { 27, 100, MLP_layer_1_weights, MLP_layer_1_biases, EmlNetActivationSoftmax } };
 static EmlNet MLP = { 2, MLP_layers, MLP_buf1, MLP_buf2, 100 };
+static const EmlNetLayer MLP_layers[2] = { 
+{ 100, 7, MLP_layer_0_weights, MLP_layer_0_biases, EmlNetActivationRelu }, 
+{ 27, 100, MLP_layer_1_weights, MLP_layer_1_biases, EmlNetActivationSoftmax } };
+static EmlNet MLP = { 2, MLP_layers, MLP_buf1, MLP_buf2, 100 };
 
     int32_t
     MLP_predict(const float *features, int32_t n_features)
