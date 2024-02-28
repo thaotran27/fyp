@@ -1,9 +1,9 @@
 #include <Adafruit_LSM6DSOX.h>
 #include <MadgwickAHRS.h>
-#include "RandomForest.h"
+#include "MLP.h"
 
 // this class will be different if you used another type of classifier, just check the model.h file
-Eloquent::ML::Port::RandomForest classifier;
+//Eloquent::ML::Port::RandomForest classifier;
 //Eloquent::ML::Port::XGBClassifier classifier;
 
 
@@ -48,7 +48,12 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
       case 16:
         return "Q";
       case 17:
-        return "R";
+        if (MLP_buf2[17]<0.95){
+          return "U";
+        }
+        else{
+          return "R";
+        }
       case 18:
         return "S";
       case 19:
@@ -56,7 +61,12 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
       case 20:
         return "U";
       case 21:
-        return "V";
+        if (MLP_buf2[21]<0.95){
+          return "U";
+        }
+        else{
+          return "V";
+        }
       case 22:
         return "W";
       case 23:
@@ -69,27 +79,27 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
     //Serial.println(classifier.predictLabel(x_sample));
 }
 
-void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
+/*void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
 
     Serial.print("Predicted class: ");
     Serial.println(classifier.predictLabel(x_sample));
-}
+}*/
 
-// left hand
+/* left hand
 const int FLEX_THUMB = A0;
 const int FLEX_INDEX = A1;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A3;
-const int FLEX_PINKY = A8;
+const int FLEX_PINKY = A8;*/
 
-/* right hand
+// right hand
 const int FLEX_THUMB = A8;
 const int FLEX_INDEX = A3;
 const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
 const int FLEX_PINKY = A0;
-*/
+
 
 
 #define NUM_ROWS 10 // Number of data samples
@@ -212,6 +222,8 @@ float fdata[NUM_ROWS][NUM_COLS]; // 2D array to store data
 float new_data[NUM_COLS];   //Array to store the new data collected
 float runningAvg[NUM_COLS];      // Array to store running averages
 bool withinThreshold[NUM_COLS];  //Array to store whether the readings are within the threshold 
+char predicted="";
+
 
 void setup() {
   Serial.begin(9600);
@@ -331,7 +343,8 @@ void loop() {
       }
       calculateRunningAverage();
       if (checkThreshold() == true){
-        classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+        predicted = *classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+        Serial.println(predcited);
       }
      else {
         Serial.println("Readings unstable");

@@ -9,87 +9,118 @@
 
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
-
     Serial.print("Predicted class: ");
     int32_t prediction = MLP_predict(x_sample, 7);
     switch (prediction) {
       case 0:
         Serial.println("A");
+        Serial.println(MLP_buf2[0]);
         break;
       case 1:
         Serial.println("B");
+        Serial.println(MLP_buf2[1]);
         break;
       case 2:
         Serial.println("C");
+        Serial.println(MLP_buf2[2]);
         break;
       case 3:
         Serial.println("D");
+        Serial.println(MLP_buf2[3]);
         break;
       case 4:
         Serial.println("E");
+        Serial.println(MLP_buf2[4]);
         break;
       case 5:
         Serial.println("F");
+        Serial.println(MLP_buf2[5]);
         break;
       case 6:
         Serial.println("G");
+        Serial.println(MLP_buf2[6]);
         break;
       case 7:
         Serial.println("H");
+        Serial.println(MLP_buf2[7]);
         break;
       case 8:
         Serial.println("I");
+        Serial.println(MLP_buf2[8]);
         break;
       case 9:
         Serial.println("J");
+        Serial.println(MLP_buf2[9]);
         break;
       case 10:
         Serial.println("K");
+        Serial.println(MLP_buf2[10]);
         break;
       case 11:
         Serial.println("L");
+        Serial.println(MLP_buf2[11]);
         break;
       case 12:
         Serial.println("M");
+        Serial.println(MLP_buf2[12]);
         break;
       case 13:
         Serial.println("N");
+        Serial.println(MLP_buf2[13]);
         break;
       case 14:
         Serial.println("O");
+        Serial.println(MLP_buf2[14]);
         break;
       case 15:
         Serial.println("P");
+        Serial.println(MLP_buf2[15]);
         break;
       case 16:
         Serial.println("Q");
+        Serial.println(MLP_buf2[16]);
         break;
       case 17:
         Serial.println("R");
+        Serial.printf("Probability U: %f\n",MLP_buf2[20]);
+        Serial.printf("Probability V: %f\n", MLP_buf2[21]);
+        Serial.printf("Probability R: %f\n", MLP_buf2[17]);
         break;
       case 18:
         Serial.println("S");
+        Serial.println(MLP_buf2[18]);
         break;
       case 19:
         Serial.println("T");
+        Serial.println(MLP_buf2[19]);
         break;
       case 20:
         Serial.println("U");
+        Serial.printf("Probability U: %f\n",MLP_buf2[20]);
+        Serial.printf("Probability V: %f\n", MLP_buf2[21]);
+        Serial.printf("Probability R: %f\n", MLP_buf2[17]);
         break;
       case 21:
         Serial.println("V");
+        Serial.printf("Probability U: %f\n",MLP_buf2[20]);
+        Serial.printf("Probability V: %f\n", MLP_buf2[21]);
+        Serial.printf("Probability R: %f\n", MLP_buf2[17]);
         break;
       case 22:
         Serial.println("W");
+        Serial.println(MLP_buf2[22]);
         break;
       case 23:
         Serial.println("X");
+        Serial.println(MLP_buf2[23]);
         break;
       case 24:
         Serial.println("Y");
+        Serial.println(MLP_buf2[24]);
         break;
       case 25:
         Serial.println("Z");
+        Serial.println(MLP_buf2[25]);
         break;
     }
     //Serial.println(classifier.predictLabel(x_sample));
@@ -319,8 +350,8 @@ void loop()
       pitch = filter.getPitch();
       nroll = (roll+180)/3.6;
       npitch = (pitch+180/3.6);
-      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",thumb_bend,findex_bend,middle_bend,ring_bend,pinky_bend,nroll,npitch);
-      classify(thumb_bend,findex_bend,middle_bend,ring_bend,pinky_bend,nroll,npitch);
+      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",thumb_bend,findex_bend,middle_bend,ring_bend,pinky_bend,roll,pitch);
+      classify(thumb_bend,findex_bend,middle_bend,ring_bend,pinky_bend,roll,pitch);
     }
     counterPrinting = (counterPrinting+1) % 80;
     microsPreviousPrinting = microsPreviousPrinting + microsPerPrinting;
