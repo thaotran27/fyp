@@ -11,7 +11,7 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
 
     //Serial.print("Predicted class: ");
-    int32_t prediction = MLP_predict(x_sample, 7);
+    int32_t prediction = MLP_predict(x_sample, 7)-1;
     switch (prediction) {
       case 0:
         return "A";
@@ -75,6 +75,8 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
         return "Y";
       case 25:
         return "Z";
+      case 26:
+      return "_";
     }
     //Serial.println(classifier.predictLabel(x_sample));
 }
@@ -222,7 +224,7 @@ float fdata[NUM_ROWS][NUM_COLS]; // 2D array to store data
 float new_data[NUM_COLS];   //Array to store the new data collected
 float runningAvg[NUM_COLS];      // Array to store running averages
 bool withinThreshold[NUM_COLS];  //Array to store whether the readings are within the threshold 
-char predicted="";
+char predicted, prev_letter=' ';
 
 
 void setup() {
@@ -329,10 +331,10 @@ void loop() {
       new_data[3] = ring.readBendness();
       new_data[4] = pinky.readBendness();
       nroll = (filter.getRoll()+180)/3.6; //Normalise roll reading to between 0 and 100
-      new_data[5] = nroll;
+      new_data[5] = filter.getRoll();
       npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
-      new_data[6] = npitch;
-      Serial.printf("A,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+      new_data[6] = filter.getPitch();
+      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
       for (int i = 0; i < NUM_ROWS - 1; i++) {
           for (int j = 0; j < NUM_COLS; j++) {
             fdata[i][j] = fdata[i + 1][j]; // Shift each element up
@@ -344,10 +346,16 @@ void loop() {
       calculateRunningAverage();
       if (checkThreshold() == true){
         predicted = *classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
-        Serial.println(predcited);
+        if (predicted!=prev_letter){
+          Serial.println(predicted);
+          prev_letter=predicted;
+        }
+        else {
+          //Do nothing
+        }
       }
      else {
-        Serial.println("Readings unstable");
+        Serial.println("Readings unstable"); //Do nothing
     }
   
     counterPrinting = (counterPrinting+1) % 80;

@@ -10,7 +10,7 @@
 void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
     Serial.print("Predicted class: ");
-    int32_t prediction = MLP_predict(x_sample, 7);
+    int32_t prediction = MLP_predict(x_sample, 7)-1;
     switch (prediction) {
       case 0:
         Serial.println("A");
@@ -120,6 +120,10 @@ void classify(float thumb, float ind, float mid, float ring, float pink, float p
         break;
       case 25:
         Serial.println("Z");
+        Serial.println(MLP_buf2[25]);
+        break;
+      case -1:
+        Serial.println(" ");
         Serial.println(MLP_buf2[25]);
         break;
     }
