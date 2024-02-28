@@ -169,6 +169,9 @@ const int FLEX_MIDDLE = A2;
 const int FLEX_RING = A1;
 const int FLEX_PINKY = A0;
 
+#define NUM_ROWS 10 // Number of data samples
+#define NUM_COLS 7   // Number of columns of data
+#define THRESHOLD 5  // Threshold for deviation from running average
 
 const float VCC = 3.3; 
 const float R_DIV =100000.0;
@@ -277,15 +280,12 @@ float convertRawGyro(int gRaw) {
   return g;
 }
 
-#define NUM_ROWS 10 // Number of data samples
-#define NUM_COLS 7   // Number of columns of data
-#define THRESHOLD 5  // Threshold for deviation from running average
 
 float fdata[NUM_ROWS][NUM_COLS]; // 2D array to store data
 float new_data[NUM_COLS];   //Array to store the new data collected
 float runningAvg[NUM_COLS];      // Array to store running averages
 bool withinThreshold[NUM_COLS];  //Array to store whether the readings are within the threshold 
-char predicted="";
+char predicted, prev_letter=' ';
 
 void setup() 
 {
@@ -395,7 +395,7 @@ void loop()
       new_data[5] = nroll;
       npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
       new_data[6] = npitch;
-      Serial.printf("A,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
       for (int i = 0; i < NUM_ROWS - 1; i++) {
           for (int j = 0; j < NUM_COLS; j++) {
             fdata[i][j] = fdata[i + 1][j]; // Shift each element up
@@ -407,12 +407,17 @@ void loop()
       calculateRunningAverage();
       if (checkThreshold() == true){
         predicted = *classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
-        Serial.println(predcited);
+        if (predicted!=prev_letter){
+          Serial.println(predicted);
+          prev_letter=predicted;
+        }
+        else {
+          //Do nothing
+        }
       }
-     else {
-        Serial.println("Readings unstable");
-    }
-  
+      else{
+        Serial.println("Readings unstable"); // Do nothing
+      }
     counterPrinting = (counterPrinting+1) % 80;
     microsPreviousPrinting = microsPreviousPrinting + microsPerPrinting;
 }
