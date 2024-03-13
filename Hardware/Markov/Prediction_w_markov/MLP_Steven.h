@@ -22,15 +22,15 @@ static EmlNet MLP = { 2, MLP_layers, MLP_buf1, MLP_buf2, 100 };
     MLP_predict_w_markov(const float *features, int32_t n_features, int32_t last_class){
         int32_t normal_pred = eml_net_predict(&MLP, features, n_features);
         int32_t markov_pred = 0;
-        int32_t max = 0;
-        for(i = 0; i < 27; i++){
+        int32_t max_prob = 0;
+        for(int i = 0; i < 27; i++){
             MLP_buf_w_markov[i] = MLP_buf2[i]*transition_matrix[last_class][i];
-            if (MLP_buf_w_markov[i] > max){
-                max = MLP_buf_w_markov[i];
+            if (MLP_buf_w_markov[i] > max_prob){
+                max_prob = MLP_buf_w_markov[i];
                 markov_pred = i;
             }
         }
-        return markov_pred
+        return markov_pred;
     }
 
     int32_t

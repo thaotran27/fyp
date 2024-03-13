@@ -11,7 +11,10 @@ const char* classify(float thumb, float ind, float mid, float ring, float pink, 
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
 
     //Serial.print("Predicted class: ");
-    int32_t prediction = MLP_predict(x_sample, 7)-1;
+    int32_t prediction = MLP_predict(x_sample, 7);
+    if ((thumb<10) && (ind<10) && (mid<10) && (ring<10) && (pink<10)){
+      return "_";
+    }
     switch (prediction) {
       case 0:
         return "A";
@@ -106,8 +109,9 @@ const int FLEX_PINKY = A0;
 
 #define NUM_ROWS 10 // Number of data samples
 #define NUM_COLS 7   // Number of columns of data
-#define THRESHOLD 5  // Threshold for deviation from running average
+#define THRESHOLD 8  // Threshold for deviation from running average
 
+unsigned long microsPrevPred, microsStable;
 
 const float VCC = 3.3; 
 const float R_DIV =100000.0;
@@ -162,35 +166,35 @@ void calibrationFinger(){
     delay(5000);
     Serial.println("Straight up you hands,");
     delay(2000);
-    for(int i = 0; i < 20; i++){
+    /*for(int i = 0; i < 20; i++){
       thumb.straight_resistance += thumb.readResistance();
       findex.straight_resistance += findex.readResistance();
       middle.straight_resistance += middle.readResistance();
       ring.straight_resistance += ring.readResistance();
       pinky.straight_resistance += pinky.readResistance();
       delay(200);
-    }
-    thumb.straight_resistance /= 20;
-    findex.straight_resistance /= 20;
-    middle.straight_resistance /= 20;
-    ring.straight_resistance /= 20;
-    pinky.straight_resistance /= 20;
+    }*/
+    thumb.straight_resistance = 80.88;
+    findex.straight_resistance = 24.41;
+    middle.straight_resistance = 24.41;
+    ring.straight_resistance = 24.41;
+    pinky.straight_resistance = 63591;
   
     Serial.println("Bend down you hands,");
     delay(1000);
-    for(int i = 0; i < 20; i++){
+    /*for(int i = 0; i < 20; i++){
       thumb.bend_resistance += thumb.readResistance();
       findex.bend_resistance += findex.readResistance();
       middle.bend_resistance += middle.readResistance();
       ring.bend_resistance += ring.readResistance();
       pinky.bend_resistance += pinky.readResistance();
       delay(200);
-    }
-    thumb.bend_resistance /= 20;
-    findex.bend_resistance /= 20;
-    middle.bend_resistance /= 20;
-    ring.bend_resistance /= 20;
-    pinky.bend_resistance /= 20;
+    }*/
+    thumb.bend_resistance = 39000;
+    findex.bend_resistance = 70000;
+    middle.bend_resistance = 50000;
+    ring.bend_resistance = 58231.63;
+    pinky.bend_resistance = 160549;
 
     Serial.println("Calibration finished!,");
     Serial.println("Resistance,Thumb,Index,Middle,Ring,Pinky");
@@ -330,11 +334,11 @@ void loop() {
       new_data[2] = middle.readBendness();
       new_data[3] = ring.readBendness();
       new_data[4] = pinky.readBendness();
-      nroll = (filter.getRoll()+180)/3.6; //Normalise roll reading to between 0 and 100
+      //nroll = (filter.getRoll()+180)/3.6; //Normalise roll reading to between 0 and 100
       new_data[5] = filter.getRoll();
-      npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
+      //npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
       new_data[6] = filter.getPitch();
-      Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+      //Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
       for (int i = 0; i < NUM_ROWS - 1; i++) {
           for (int j = 0; j < NUM_COLS; j++) {
             fdata[i][j] = fdata[i + 1][j]; // Shift each element up
@@ -344,18 +348,21 @@ void loop() {
         fdata[NUM_ROWS-1][j] = new_data[j];
       }
       calculateRunningAverage();
-      if (checkThreshold() == true){
+      if ((checkThreshold() == true) && (microsNow-microsStable>1500000)){
+        microsStable = microsNow;
         predicted = *classify(new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
         if (predicted!=prev_letter){
           Serial.println(predicted);
           prev_letter=predicted;
+          microsPrevPred=microsNow;
         }
         else {
           //Do nothing
         }
       }
-     else {
-        Serial.println("Readings unstable"); //Do nothing
+     else if (microsNow-microsPrevPred>1500000){
+        prev_letter=' ';
+        //Serial.println("Readings unstable"); //Do nothing
     }
   
     counterPrinting = (counterPrinting+1) % 80;

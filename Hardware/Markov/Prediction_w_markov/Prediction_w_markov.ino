@@ -9,147 +9,68 @@
 static int32_t last_class = 26; //initial assume previous class is blank
 static int32_t prediction_w_markov = 26;
 
-void classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
+const char* classify(float thumb, float ind, float mid, float ring, float pink, float pitch, float roll) {
     float x_sample[] = { thumb, ind, mid, ring, pink, pitch, roll };
+    int number_features = sizeof(x_sample)/sizeof(x_sample[0]);
     Serial.print("Predicted class: ");
-    int32_t prediction = MLP_predict(x_sample, 7);
-    prediction_w_markov = MLP_predict_w_markov(x_sample, 7, last_class);
-    switch (prediction_w_markov) {
+    int32_t prediction = MLP_predict(x_sample, number_features);
+    //prediction_w_markov = MLP_predict_w_markov(x_sample, number_features, last_class);
+    switch (prediction) {
+    //switch (prediction_w_markov) {
       case 0:
-        Serial.println("A");
-        Serial.println(MLP_buf2[0]);
-        Serial.println(MLP_buf_w_markov[0]);
-        break;
+        return "_";
       case 1:
-        Serial.println("B");
-        Serial.println(MLP_buf2[1]);
-        Serial.println(MLP_buf_w_markov[1]);
-        break;
+        return "A";
       case 2:
-        Serial.println("C");
-        Serial.println(MLP_buf2[2]);
-        Serial.println(MLP_buf_w_markov[2]);
-        break;
+        return "B";
       case 3:
-        Serial.println("D");
-        Serial.println(MLP_buf2[3]);
-        Serial.println(MLP_buf_w_markov[3]);
-        break;
+        return "C";
       case 4:
-        Serial.println("E");
-        Serial.println(MLP_buf2[4]);
-        Serial.println(MLP_buf_w_markov[4]);
-        break;
+        return "D";
       case 5:
-        Serial.println("F");
-        Serial.println(MLP_buf2[5]);
-        Serial.println(MLP_buf_w_markov[5]);
-        break;
+        return "E";
       case 6:
-        Serial.println("G");
-        Serial.println(MLP_buf2[6]);
-        Serial.println(MLP_buf_w_markov[6]);
-        break;
+        return "F";
       case 7:
-        Serial.println("H");
-        Serial.println(MLP_buf2[7]);
-        Serial.println(MLP_buf_w_markov[7]);
-        break;
+        return "G";
       case 8:
-        Serial.println("I");
-        Serial.println(MLP_buf2[8]);
-        Serial.println(MLP_buf_w_markov[8]);
-        break;
+        return "H";
       case 9:
-        Serial.println("J");
-        Serial.println(MLP_buf2[9]);
-        Serial.println(MLP_buf_w_markov[9]);
-        break;
+        return "I";
       case 10:
-        Serial.println("K");
-        Serial.println(MLP_buf2[10]);
-        Serial.println(MLP_buf_w_markov[10]);
-        break;
+        return "J";
       case 11:
-        Serial.println("L");
-        Serial.println(MLP_buf2[11]);
-        Serial.println(MLP_buf_w_markov[11]);
-        break;
+        return "K";
       case 12:
-        Serial.println("M");
-        Serial.println(MLP_buf2[12]);
-        Serial.println(MLP_buf_w_markov[12]);
-        break;
+        return "L";
       case 13:
-        Serial.println("N");
-        Serial.println(MLP_buf2[13]);
-        Serial.println(MLP_buf_w_markov[13]);
-        break;
+        return "M";
       case 14:
-        Serial.println("O");
-        Serial.println(MLP_buf2[14]);
-        Serial.println(MLP_buf_w_markov[014]);
-        break;
+        return "N";
       case 15:
-        Serial.println("P");
-        Serial.println(MLP_buf2[15]);
-        Serial.println(MLP_buf_w_markov[15]);
-        break;
+        return "O";
       case 16:
-        Serial.println("Q");
-        Serial.println(MLP_buf2[16]);
-        Serial.println(MLP_buf_w_markov[16]);
-        break;
+        return "P";
       case 17:
-        Serial.println("R");
-        Serial.printf(MLP_buf2[17]);
-        Serial.println(MLP_buf_w_markov[17]);
-        break;
+        return "Q";
       case 18:
-        Serial.println("S");
-        Serial.println(MLP_buf2[18]);
-        Serial.println(MLP_buf_w_markov[18]);
-        break;
+        return "R";
       case 19:
-        Serial.println("T");
-        Serial.println(MLP_buf2[19]);
-        Serial.println(MLP_buf_w_markov[19]);
-        break;
+        return "S";
       case 20:
-        Serial.println("U");
-        Serial.printf(MLP_buf2[20]);
-        Serial.println(MLP_buf_w_markov[20]);
-        break;
+        return "T";
       case 21:
-        Serial.println("V");
-        Serial.printf(MLP_buf2[21]);
-        Serial.println(MLP_buf_w_markov[21]);
-        break;
+        return "U";
       case 22:
-        Serial.println("W");
-        Serial.println(MLP_buf2[22]);
-        Serial.println(MLP_buf_w_markov[22]);
-        break;
+        return "V";
       case 23:
-        Serial.println("X");
-        Serial.println(MLP_buf2[23]);
-        Serial.println(MLP_buf_w_markov[23]);
-        break;
+        return "W";
       case 24:
-        Serial.println("Y");
-        Serial.println(MLP_buf2[24]);
-        Serial.println(MLP_buf_w_markov[24]);
-        break;
+        return "X";
       case 25:
-        Serial.println("Z");
-        Serial.println(MLP_buf2[25]);
-        Serial.println(MLP_buf_w_markov[25]);
-        break;
+        return "Y";
       case 26:
-        Serial.println(" ");
-        Serial.println(MLP_buf2[26]);
-        Serial.println(MLP_buf_w_markov[26]);
-        break;
+        return "Z";
     }
     //Serial.println(classifier.predictLabel(x_sample));
 }
@@ -221,7 +142,18 @@ Finger pinky(FLEX_PINKY);
 // Flags
 bool isCalibrated = false;
 void calibrationFinger(){
-    delay(5000);
+    thumb.straight_resistance = 67056.351562;
+    findex.straight_resistance = 71625.304688;
+    middle.straight_resistance = 60465.820312;
+    ring.straight_resistance = 63448.125000;
+    pinky.straight_resistance = 154289.125000;
+    
+    thumb.bend_resistance = 120527.187500;
+    findex.bend_resistance = 161683.281250;
+    middle.bend_resistance = 137490.281250;
+    ring.bend_resistance = 139040.609375;
+    pinky.bend_resistance = 240234.078125;
+    /*delay(5000);
     Serial.println("Straight up you hands,");
     delay(2000);
     for(int i = 0; i < 20; i++){
@@ -259,7 +191,7 @@ void calibrationFinger(){
     Serial.printf("Straight resistance,%f,%f,%f,%f,%f\n",thumb.straight_resistance,findex.straight_resistance, middle.straight_resistance, ring.straight_resistance,pinky.straight_resistance);
     Serial.printf("Bend resistance,%f,%f,%f,%f,%f\n",thumb.bend_resistance,findex.bend_resistance, middle.bend_resistance, ring.bend_resistance,pinky.bend_resistance);
     Serial.println("Time to read data,");
-    Serial.println("Label,Thumb,Index,Middle,Ring,Pinky,Pitch,Roll");
+    Serial.println("Label,Thumb,Index,Middle,Ring,Pinky,Pitch,Roll");*/
 }
 
 float convertRawAcceleration(int aRaw) {
@@ -392,10 +324,10 @@ void loop()
       new_data[3] = ring.readBendness();
       new_data[4] = pinky.readBendness();
       nroll = (filter.getRoll()+180)/3.6; //Normalise roll reading to between 0 and 100
-      new_data[5] = nroll;
+      new_data[5] = filter.getRoll();
       npitch = (filter.getPitch()+180)/3.6; //Normalise pitch reading to between 0 and 100
-      new_data[6] = npitch;
-      //Serial.printf(" ,%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
+      new_data[6] = filter.getPitch();
+      Serial.printf("%f,%f,%f,%f,%f,%f,%f\n",new_data[0],new_data[1],new_data[2],new_data[3],new_data[4],new_data[5],new_data[6]);
       for (int i = 0; i < NUM_ROWS - 1; i++) {
           for (int j = 0; j < NUM_COLS; j++) {
             fdata[i][j] = fdata[i + 1][j]; // Shift each element up
@@ -413,6 +345,7 @@ void loop()
           last_class = prediction_w_markov;
         }
         else {
+          Serial.println(predicted);
           //Do nothing
         }
       }
